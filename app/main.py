@@ -5,6 +5,9 @@ from contextlib import asynccontextmanager
 from .api import router
 from .db import init_pool, close_pool
 
+import app.extraction.engines
+
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from .extraction.registry import all_names
 
 from .domain.schemas import ExtractRequest, ExtractResponse
 from .config import settings
@@ -15,7 +16,7 @@ async def healthz():
 
 @router.get("/engines")
 async def engines():
-     return {"default": settings.export_dir}
+    return {"engines": all_names(), "default": settings.default_engine}
 
 @router.get("/db-ping")
 async def db_ping():

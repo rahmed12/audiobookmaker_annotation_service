@@ -1,17 +1,9 @@
-from typing import Dict, Type
-from app.extraction.base import BaseExtractor
-
-class ExtractorRegistry:
-    def __init__(self):
-        self._extractors: Dict[str, Type[BaseExtractor]] = {}
-
-    def register(self, name: str, extractor: Type[BaseExtractor]):
-        self._extractors[name] = extractor
-
-    def get_extractor(self, name: str) -> Type[BaseExtractor]:
-        extractor = self._extractors.get(name)
-        if not extractor:
-            raise ValueError(f"Extractor '{name}' not found in registry.")
-        return extractor
-
-registry = ExtractorRegistry()
+from typing import Dict
+from .base import Extractor
+_REGISTRY: Dict[str, Extractor] = {}
+def register(engine: Extractor) -> None: _REGISTRY[engine.name] = engine
+def get(name: str) -> Extractor:
+    if name not in _REGISTRY:
+        raise ValueError(f"Unknown engine '{name}'. Available: {list(_REGISTRY)}")
+    return _REGISTRY[name]
+def all_names() -> list[str]: return list(_REGISTRY.keys())
